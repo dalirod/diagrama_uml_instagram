@@ -11,47 +11,46 @@ Base = declarative_base()
 class User(Base):
     __tablename__='user'
     id=Column(Integer,primary_key=True)
+    username=Column(String(50))
     name=Column(String(200),nullable=False)
     email=Column(String(200),nullable=False,unique=True)
     password=Column(String(10),nullable=False)
-    age=Column(Integer)
-    date_of_birth=Column(Integer)
-    planets= relationship('Planets')
-
-
-
-class Planets(Base):
-    __tablename__='planets'
+    comment= relationship('comment')
+    post= relationship('post')
+    reels=relationship('reels')
+    
+class Comment(Base):
+    __tablename__='comment'
     id=Column(Integer,primary_key=True)
-    name=Column(String(4),nullable=False)
-    population=Column(Integer)
+    comments_text=Column(String)
     user_id=Column(Integer,ForeignKey('user.id'))
-    user=relationship('user')
-
+    likes=relationship('likes')
+    post_id= Column(Integer,ForeignKey('post.id'))
+   
  
-class Favorites(Base):
-    __tablename__='favorites'   
+class Post(Base):
+    __tablename__='post'   
     id=Column(Integer,primary_key=True)
-    name=Column(String(100),nullable=False)  
+    comment_text=Column(String)
     user_id=Column(Integer,ForeignKey('user.id'))
-    user=relationship('user')
+    likes=relationship('likes')
+    comment=relationship('comment')
+  
 
-
-class Characterest(Base):
-    __tablename__='characterest'   
+class Reels(Base):
+    __tablename__='reels'   
     id=Column(Integer,primary_key=True)
-    name=Column(String(100),nullable=False)
-    occupation=Column(String(100))
     user_id=Column(Integer,ForeignKey('user.id'))
-    user=relationship('user')
+    likes=relationship('likes')
+ 
 
-
-class Villain(Base):
-    __tablename__='villain'   
+class Likes(Base):
+    __tablename__='likes'   
     id=Column(Integer,primary_key=True)
-    name=Column(String(100),nullable=False)
-    characterest_id= Column(Integer,ForeignKey('characterest.id'))
-    characterest= relationship('characterest')
+    comment_id=Column(Integer,ForeignKey('comment.id'))
+    post_id=Column(Integer,ForeignKey('post'))
+    reels_id=Column(Integer,ForeignKey('reels'))
+  
     
 
 
